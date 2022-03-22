@@ -40,8 +40,8 @@ public class ExpenseReportTest {
     }
 
     @Test
-    public void generateHTMLReportTest() {
-        String report = expenseReport.generateReport("html");
+    public void generateHTMLReportTest(@Autowired ExpenseReportHtml expenseReportHtml) {
+        String report = expenseReportHtml.generateReport();
         String body = "<ul><li>"+expenseRepository.findAll().stream()
                 .map(Objects::toString).collect(Collectors.joining("</li><li>"))+"</li></ul>";
         assertThat(report, equalTo("<header><h1>Company Report</h1></header><main><h2>This is the Expense Report</h2><p>"+body+"</p></main><footer>2022 - Design Patterns IFPB</footer>"));
@@ -49,8 +49,8 @@ public class ExpenseReportTest {
     }
 
     @Test
-    public void generateJsonReportTest() {
-        String report = expenseReport.generateReport("json");
+    public void generateJsonReportTest(@Autowired ExpenseReportJson expenseReportJson) {
+        String report = expenseReportJson.generateReport();
         String body = expenseRepository.findAll().stream()
                 .map(Objects::toString).collect(Collectors.joining(","));
         assertThat(report, equalTo("{ header: \"Company Report\" ,main: { title: \"This is the Expense Report\", content: \""+body+"\" ,footer: \"2022 - Design Patterns IFPB\" }"));
